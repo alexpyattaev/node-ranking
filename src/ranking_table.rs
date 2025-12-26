@@ -1,8 +1,6 @@
-use std::{collections::HashMap, time::Instant};
-
-use solana_pubkey::Pubkey;
-
 use crate::gossip_spy::Ports;
+use solana_pubkey::Pubkey;
+use std::{collections::HashMap, time::Instant};
 
 #[derive(Debug)]
 pub struct GossipData {

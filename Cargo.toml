@@ -1,16 +1,12 @@
 [package]
 name = "node-ranking"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 
 [dependencies]
 anyhow = "1.0"
-
-arc-swap = "1.7"
 axum = { version = "0.8.7", features = ["tokio", "tracing", "query", "macros"] }
-bytes = "1.9"
 clap = { version = "4.5", features = ["derive", "env"] }
-http-body-util = "0.1"
 log = "0.4.29"
 reqwest = { version = "0.12", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }
@@ -24,5 +20,3 @@ solana-pubkey = "4.0.0"
 solana-streamer = { version = "3.*", features = ["agave-unstable-api"] }
 tokio = { version = "1.48.0", features = ["full"] }
 tokio-util = { version = "0.7.17", features = ["full"] }
-tracing = "0.1"
-tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }

@@ -1,9 +1,7 @@
-use std::{
-    collections::BTreeSet,
-    net::{Ipv4Addr, SocketAddr},
-    time::Duration,
+use crate::{
+    gossip_spy::Ports,
+    ranking_table::{GossipData, StakeData},
 };
-
 use anyhow::Context;
 use axum::{
     Json, Router,
@@ -12,17 +10,16 @@ use axum::{
     response::IntoResponse,
     routing::get,
 };
-
+use log::info;
 use serde::{Deserialize, Serialize};
 use solana_native_token::LAMPORTS_PER_SOL;
 use solana_pubkey::Pubkey;
-use tokio::{net::TcpListener, sync::watch::Receiver};
-use tracing::info;
-
-use crate::{
-    gossip_spy::Ports,
-    ranking_table::{GossipData, StakeData},
+use std::{
+    collections::BTreeSet,
+    net::{Ipv4Addr, SocketAddr},
+    time::Duration,
 };
+use tokio::{net::TcpListener, sync::watch::Receiver};
 
 type AppState = (Receiver<GossipData>, Receiver<StakeData>);
 pub async fn run_http(state: AppState, listen_addr: SocketAddr) -> anyhow::Result<()> {

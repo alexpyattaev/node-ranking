@@ -1,11 +1,10 @@
-#![allow(dead_code, clippy::arithmetic_side_effects)]
-use std::{collections::HashMap, net::SocketAddr, ops::AddAssign, time::Duration};
-
+#![allow(clippy::arithmetic_side_effects)]
 use clap::Parser;
+use log::error;
 use serde::{Deserialize, Serialize};
 use solana_pubkey::Pubkey;
+use std::{collections::HashMap, net::SocketAddr, ops::AddAssign, time::Duration};
 use tokio::sync::watch::Sender;
-use tracing::error;
 
 use crate::ranking_table::StakeData;
 
@@ -44,28 +43,20 @@ struct RpcResponse<T> {
     result: T,
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Clone, Deserialize)]
 struct VoteAccountsResult {
     current: Vec<VoteAccount>,
     delinquent: Vec<VoteAccount>,
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct VoteAccount {
     vote_pubkey: String,
     node_pubkey: String,
     activated_stake: u64,
-}
-
-#[derive(Debug, Clone, Serialize)]
-struct IpWithVoteKeys {
-    ip: String,
-    vote_keys: Vec<String>,
-}
-
-fn extract_ip(address: Option<&String>) -> Option<&str> {
-    address.and_then(|a| a.rsplit_once(':').map(|(ip, _)| ip))
 }
 
 async fn fetch_validator_ips(rpc_url: &str, api_key: Option<&str>) -> anyhow::Result<StakeData> {
@@ -120,7 +111,7 @@ pub async fn stakes_refresh_loop(
                 sender.send(ip_data)?;
             }
             Err(e) => {
-                error!(error = %e, "Failed to fetch validator IPs");
+                error!("Failed to fetch validator IPs: {}", e);
             }
         }
         tokio::time::sleep(interval).await;

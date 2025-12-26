@@ -1,5 +1,3 @@
-use std::{net::SocketAddr, time::Duration};
-
 use crate::{
     gossip_spy::{get_shred_version, watch_gossip},
     http_endpoint::run_http,
@@ -8,9 +6,9 @@ use crate::{
 };
 use clap::Parser;
 use solana_net_utils::parse_host_port;
+use std::{net::SocketAddr, time::Duration};
 use tokio::signal::ctrl_c;
 use tokio_util::sync::CancellationToken;
-
 mod gossip_spy;
 mod http_endpoint;
 mod ranking_table;
@@ -19,8 +17,6 @@ mod rpc_request;
 #[derive(Parser)]
 #[command(version, about,  long_about = None)]
 struct Cli {
-    #[arg(short, long)]
-    verbose: bool,
     #[arg(short, long, value_parser=parse_host_port)]
     known_gossip_peer: SocketAddr,
     #[arg(short, long)]
@@ -29,9 +25,6 @@ struct Cli {
     api_bind_address: SocketAddr,
     #[arg(short, long)]
     gossip_spy_bind_address: SocketAddr,
-    #[arg(short, long, default_value = "300")]
-    /// Timeout for discovery of turbine and repair ports. set to 0 to ony work with gossip
-    discovery_timeout_sec: u64,
 }
 
 #[tokio::main]
